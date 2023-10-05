@@ -51,13 +51,53 @@ void draw() {
 }
 
 4번
+![image](https://github.com/leejy04/Engineering/assets/145010514/085e858e-6dbd-457b-8f48-d5251565947c)
+
+앱 인벤터를 열심히 만져봤지만 앱 프로세싱 코드 짜보기도 전에 실패했습니다.
 
 
-
-
-
-
-
-
-
-
+5번
+아두이노 코드
+int ledPin = 7;
+void setup() {
+  pinMode(ledPin, OUTPUT);
+  Serial.begin(9600);
+}
+void loop() {
+  if (Serial.available() > 0) {
+    char command = Serial.read();
+    if (command == 'on') {
+      digitalWrite(ledPin, HIGH);
+    } else if (command == 'off') {
+      digitalWrite(ledPin, LOW);
+    }
+  }
+}
+프로세싱 코드
+import processing.net.*;
+Client client;
+int ledPin = 7;
+void setup() {
+  size(200, 200);
+  client = new Client(this, "", 80);
+}
+void draw() {
+  background(255);
+  fill(0);
+  textSize(24);
+  textAlign(CENTER);
+  text("LED 제어", width / 2, 50);
+}
+void mousePressed() {
+  if (mouseX < width / 2) {
+    client.write("on");
+  } else {
+    client.write("off");
+  }
+}
+void keyPressed() {
+  if (key == 'q') {
+    client.stop();
+    exit();
+  }
+}
